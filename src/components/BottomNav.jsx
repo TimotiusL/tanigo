@@ -27,9 +27,9 @@ export default function BottomNav() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50">
-      <div className="max-w-md mx-auto px-4 pb-4">
-        <div className="backdrop-blur-xl bg-base-100/90 border border-green-100 shadow-2xl rounded-3xl px-4 py-3 flex justify-between">
+    <div className="fixed bottom-0 left-0 right-0 z-40">
+      <div className="w-full px-4 pb-4">
+        <div className="backdrop-blur-xl bg-base-100/90 border border-green-100 shadow-2xl rounded-3xl px-4 py-3 flex justify-between w-full">
           {menus.map((menu, index) => (
             <Link
               key={index}

@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FaArrowLeft, FaPlus } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaPlus, FaTimes } from "react-icons/fa";
+import BottomNav from "../components/BottomNav";
 
 export default function CropPage({ crops, setCrops }) {
-  const navigate = useNavigate();
+  
 
   const [showModal, setShowModal] = useState(false);
+  const [harvestError, setHarvestError] = useState("");
 
   const [newCrop, setNewCrop] = useState({
     name: "",
@@ -14,15 +15,18 @@ export default function CropPage({ crops, setCrops }) {
   });
 
   const handleAddCrop = () => {
-    if (!newCrop.name || !newCrop.harvest) return;
+    if (!newCrop.name || !newCrop.harvest || harvestError) return;
+
+    const totalDays = Number(newCrop.harvest);
 
     const crop = {
       name: newCrop.name,
-      harvest: newCrop.harvest,
-      progress: 30,
+      harvest: `${newCrop.harvest} days`,
+      progress: 0,
       status: "Growing",
       tip: "Maintain soil moisture regularly",
-      daysLeft: 10,
+      daysLeft: totalDays,
+      totalDays,
     };
 
     setCrops([crop, ...crops]);
@@ -31,7 +35,7 @@ export default function CropPage({ crops, setCrops }) {
       name: "",
       harvest: "",
     });
-
+    setHarvestError("");
     setShowModal(false);
   };
 
@@ -41,37 +45,36 @@ export default function CropPage({ crops, setCrops }) {
     return "badge-neutral";
   };
 
+  const handleDeleteCrop = (indexToRemove) => {
+    setCrops(crops.filter((_, index) => index !== indexToRemove));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-200 pb-32">
       {/* HEADER */}
-      <div className="sticky top-0 z-50 bg-base-100/70 backdrop-blur-xl border-b border-base-300">
-        <div className="max-w-2xl mx-auto px-5 py-4 flex items-center gap-4">
-          <button
-            onClick={() => navigate("/")}
-            className="btn btn-circle btn-ghost"
-          >
-            <FaArrowLeft />
-          </button>
+      {!showModal && (
+        <div className="sticky top-0 z-50 bg-base-100/70 backdrop-blur-xl border-b border-base-300">
+          <div className="w-full px-8 py-4 flex items-center gap-4">
+            <div>
+              <h1 className="text-2xl font-extrabold text-primary">
+                Crop Schedule
+              </h1>
 
-          <div>
-            <h1 className="text-2xl font-extrabold text-primary">
-              Crop Schedule
-            </h1>
-
-            <p className="text-sm text-base-content/60">
-              Track your farming progress
-            </p>
+              <p className="text-sm text-base-content/60">
+                Track your farming progress
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* CONTENT */}
-      <div className="max-w-2xl mx-auto px-5 pt-6 space-y-5">
+      <div className="w-full px-8 pt-6 grid gap-6">
         {crops.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-base-100 rounded-[2rem] p-10 text-center shadow-xl border border-base-300"
+            className="text-center py-10"
           >
             <div className="text-6xl mb-5">🌱</div>
 
@@ -85,7 +88,7 @@ export default function CropPage({ crops, setCrops }) {
 
             <button
               onClick={() => setShowModal(true)}
-              className="btn btn-primary rounded-2xl mt-6"
+              className="inline-flex rounded-2xl mt-8 px-6 py-3 bg-green-600 text-white hover:bg-green-700 shadow-lg transition"
             >
               Add Your First Crop
             </button>
@@ -103,6 +106,20 @@ export default function CropPage({ crops, setCrops }) {
               transition={{ duration: 0.2 }}
               className="relative overflow-hidden rounded-[2rem] bg-base-100/90 backdrop-blur shadow-xl border border-base-300"
             >
+              <button
+                type="button"
+                onClick={() => handleDeleteCrop(index)}
+                className="absolute right-4 top-4 h-10 w-10 rounded-xl bg-red-500 text-white shadow-lg hover:bg-red-600 transition flex items-center justify-center z-10"
+              >
+                <FaTimes />
+              </button>
+              <div className={`absolute right-20 top-5 rounded-full px-3 py-1 text-xs font-semibold shadow-sm ${
+                crop.progress >= 100
+                  ? "bg-green-100 text-green-700"
+                  : "bg-base-200 text-base-content/80"
+              }`}>
+                {crop.progress >= 100 ? "Complete" : "Ongoing"}
+              </div>
               {/* accent */}
               <div className="absolute left-0 top-0 h-full w-1.5 bg-primary" />
 
@@ -121,14 +138,6 @@ export default function CropPage({ crops, setCrops }) {
                     <p className="text-sm text-base-content/60 mt-2">
                       Harvest: {crop.harvest}
                     </p>
-                  </div>
-
-                  <div
-                    className={`badge ${getBadgeClass(
-                      crop.progress,
-                    )} badge-outline px-4 py-3`}
-                  >
-                    {crop.status}
                   </div>
                 </div>
 
@@ -175,16 +184,18 @@ export default function CropPage({ crops, setCrops }) {
       </div>
 
       {/* FLOATING BUTTON */}
-      <button
-        onClick={() => setShowModal(true)}
-        className="fixed bottom-24 right-6 btn btn-primary btn-circle shadow-2xl hover:scale-110 transition"
-      >
-        <FaPlus />
-      </button>
+      {!showModal && crops.length > 0 && (
+        <button
+          onClick={() => setShowModal(true)}
+          className="fixed bottom-24 right-6 btn btn-primary btn-circle shadow-2xl hover:scale-110 transition"
+        >
+          <FaPlus />
+        </button>
+      )}
 
       {/* MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-end sm:items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-60">
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -201,8 +212,8 @@ export default function CropPage({ crops, setCrops }) {
             <div className="space-y-4 mt-6">
               <input
                 type="text"
-                placeholder="Crop Name"
-                className="input input-bordered w-full rounded-2xl"
+                placeholder="Crop Name (e.g. Rice, Corn, Carrot)"
+                className="input input-bordered w-full rounded-2xl px-4 py-3"
                 value={newCrop.name}
                 onChange={(e) =>
                   setNewCrop({
@@ -214,27 +225,52 @@ export default function CropPage({ crops, setCrops }) {
 
               <input
                 type="text"
-                placeholder="Harvest Time"
-                className="input input-bordered w-full rounded-2xl"
+                placeholder="Harvest Time (days only)"
+                className="input input-bordered w-full rounded-2xl px-4 py-3"
                 value={newCrop.harvest}
-                onChange={(e) =>
-                  setNewCrop({
-                    ...newCrop,
-                    harvest: e.target.value,
-                  })
-                }
-              />
+                onChange={(e) => {
+                  const value = e.target.value;
 
-              <button
-                onClick={handleAddCrop}
-                className="btn btn-primary w-full rounded-2xl text-white"
-              >
-                Save Crop
-              </button>
+                  if (/^\d*$/.test(value)) {
+                    setNewCrop({
+                      ...newCrop,
+                      harvest: value,
+                    });
+                    setHarvestError("");
+                  } else {
+                    setHarvestError("Input ulang harus angka");
+                  }
+                }}
+              />
+              {harvestError && (
+                <p className="text-sm text-red-500 mt-1">
+                  {harvestError}
+                </p>
+              )}
+
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => {
+                  setShowModal(false);
+                  setHarvestError("");
+                }}
+                  className="w-full rounded-2xl bg-red-500 text-white px-5 py-3 shadow-sm hover:bg-red-600 transition"
+                >
+                  Close
+                </button>
+
+                <button
+                  onClick={handleAddCrop}
+                  className="w-full rounded-2xl bg-green-500 text-white px-5 py-3 shadow-sm hover:bg-green-600 transition"
+                >
+                  Add
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>
       )}
+      {!showModal && <BottomNav />}
     </div>
   );
 }

@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
-import {
-  FaArrowLeft,
-  FaWind,
-  FaTint,
-  FaMapMarkerAlt,
-  FaSun,
-} from "react-icons/fa";
+import { FaWind, FaTint, FaMapMarkerAlt, FaSun } from "react-icons/fa";
 
 import BottomNav from "../components/BottomNav";
 
 export default function WeatherPage() {
-  const navigate = useNavigate();
+ 
 
   const [weather, setWeather] = useState(null);
 
@@ -67,28 +60,17 @@ export default function WeatherPage() {
     <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-200 pb-32">
       {/* HEADER */}
       <div className="sticky top-0 z-50 bg-base-100/70 backdrop-blur-xl border-b border-base-300">
-        <div className="max-w-2xl mx-auto px-5 py-4 flex items-center gap-4">
-          <button
-            onClick={() => navigate("/")}
-            className="btn btn-circle btn-ghost"
-          >
-            <FaArrowLeft />
-          </button>
-
+        <div className="w-full px-8 py-4 flex items-center gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold text-primary">
-              Weather Alert
-            </h1>
+            <h1 className="text-2xl font-extrabold text-primary">Weather Alert</h1>
 
-            <p className="text-sm text-base-content/60">
-              Real-time farming weather
-            </p>
+            <p className="text-sm text-base-content/60">Real-time farming weather</p>
           </div>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div className="max-w-2xl mx-auto px-5 pt-6 space-y-5">
+      <div className="w-full px-8 pt-6 grid gap-6">
         {!weather ? (
           <div className="rounded-[2rem] bg-primary text-white p-8 shadow-xl">
             Loading weather...

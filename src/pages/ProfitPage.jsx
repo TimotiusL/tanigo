@@ -1,27 +1,20 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 
-import {
-  FaArrowLeft,
-  FaSeedling,
-  FaMoneyBillWave,
-  FaUsers,
-} from "react-icons/fa";
+import { FaSeedling, FaMoneyBillWave, FaUsers } from "react-icons/fa";
 
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import BottomNav from "../components/BottomNav";
 
-export default function ProfitPage() {
-  const navigate = useNavigate();
-
-  const [capital, setCapital] = useState(1000000);
-  const [fertilizer, setFertilizer] = useState(500000);
-  const [worker, setWorker] = useState(300000);
-  const [income, setIncome] = useState(3000000);
-
-  const totalExpense = capital + fertilizer + worker;
+export default function ProfitPage({ crops, cropCosts, setCropCosts, income, setIncome }) {
+  const cropExpenseItems = crops || [];
+  const totalExpense = Object.values(cropCosts || {}).reduce(
+    (sum, value) => sum + Number(value || 0),
+    0,
+  );
 
   const profit = income - totalExpense;
+  const profitLabel = profit >= 0 ? "Profit" : "Loss";
+  const profitAmount = Math.abs(profit);
 
   const data = [
     {
@@ -29,8 +22,8 @@ export default function ProfitPage() {
       value: totalExpense,
     },
     {
-      name: "Profit",
-      value: profit > 0 ? profit : 0,
+      name: profit >= 0 ? "Profit" : "Loss",
+      value: profit >= 0 ? profit : 0,
     },
   ];
 
@@ -40,28 +33,17 @@ export default function ProfitPage() {
     <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-200 pb-32">
       {/* HEADER */}
       <div className="sticky top-0 z-50 bg-base-100/70 backdrop-blur-xl border-b border-base-300">
-        <div className="max-w-2xl mx-auto px-5 py-4 flex items-center gap-4">
-          <button
-            onClick={() => navigate("/")}
-            className="btn btn-circle btn-ghost"
-          >
-            <FaArrowLeft />
-          </button>
-
+        <div className="w-full px-8 py-4 flex items-center gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold text-primary">
-              Profit Calculator
-            </h1>
+            <h1 className="text-2xl font-extrabold text-primary">Profit Calculator</h1>
 
-            <p className="text-sm text-base-content/60">
-              Estimate your farming income
-            </p>
+            <p className="text-sm text-base-content/60">Estimate your farming income</p>
           </div>
         </div>
       </div>
 
       {/* CONTENT */}
-      <div className="max-w-2xl mx-auto px-5 pt-6 space-y-5">
+      <div className="w-full px-8 pt-6 grid gap-6">
         {/* HERO SUMMARY */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -70,27 +52,25 @@ export default function ProfitPage() {
         >
           <div className="absolute right-0 top-0 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
 
-          <p className="opacity-80 text-sm">Estimated Net Profit</p>
+          <p className="opacity-80 text-sm">Enter your costs and income to calculate profit or loss</p>
 
           <h2 className="text-5xl font-black mt-3 tracking-tight">
-            Rp {profit.toLocaleString()}
+            Rp {profitAmount.toLocaleString()}
           </h2>
 
+          <p className="mt-2 text-sm opacity-90">
+            {profit >= 0 ? "Estimated net profit" : "Estimated net loss"}
+          </p>
+
           <div className="mt-5">
-            {profit > 0 ? (
-              <div className="badge badge-success badge-lg px-5 py-4">
-                Profitable 🌱
-              </div>
-            ) : (
-              <div className="badge badge-error badge-lg px-5 py-4">
-                Loss 📉
-              </div>
-            )}
+            <div className={`badge badge-lg px-5 py-4 ${profit >= 0 ? "badge-success" : "badge-error"}`}>
+              {profitLabel} {profit >= 0 ? "🌱" : "📉"}
+            </div>
           </div>
         </motion.div>
 
         {/* QUICK STATS */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -100,10 +80,10 @@ export default function ProfitPage() {
               <FaSeedling />
             </div>
 
-            <p className="text-xs text-base-content/60 mt-3">Seed Cost</p>
+            <p className="text-xs text-base-content/60 mt-3">Crop Count</p>
 
             <h2 className="text-lg font-bold mt-1">
-              Rp {capital.toLocaleString()}
+              {cropExpenseItems.length}
             </h2>
           </motion.div>
 
@@ -112,14 +92,12 @@ export default function ProfitPage() {
             animate={{ opacity: 1 }}
             className="rounded-[1.7rem] bg-base-100 border border-base-300 shadow-lg p-4"
           >
-            <div className="text-warning text-xl">
-              <FaMoneyBillWave />
-            </div>
+            <div className="text-warning text-xl">💰</div>
 
-            <p className="text-xs text-base-content/60 mt-3">Fertilizer</p>
+            <p className="text-xs text-base-content/60 mt-3">Total Expense</p>
 
             <h2 className="text-lg font-bold mt-1">
-              Rp {fertilizer.toLocaleString()}
+              Rp {totalExpense.toLocaleString()}
             </h2>
           </motion.div>
 
@@ -132,10 +110,10 @@ export default function ProfitPage() {
               <FaUsers />
             </div>
 
-            <p className="text-xs text-base-content/60 mt-3">Workers</p>
+            <p className="text-xs text-base-content/60 mt-3">Income</p>
 
             <h2 className="text-lg font-bold mt-1">
-              Rp {worker.toLocaleString()}
+              Rp {income.toLocaleString()}
             </h2>
           </motion.div>
         </div>
@@ -202,43 +180,50 @@ export default function ProfitPage() {
             </h2>
 
             <p className="text-sm text-base-content/60 mt-1">
-              Enter your farming cost estimation
+              Input the expense amount for each crop.
             </p>
           </div>
 
-          <input
-            type="number"
-            className="input input-bordered w-full rounded-2xl"
-            placeholder="Seed Capital"
-            value={capital}
-            onChange={(e) => setCapital(Number(e.target.value))}
-          />
+          {cropExpenseItems.length === 0 ? (
+            <p className="text-base-content/70">No crops available yet.</p>
+          ) : (
+            cropExpenseItems.map((crop) => (
+              <div key={crop.name} className="grid grid-cols-[1fr_auto] gap-4 items-center">
+                <div>
+                  <p className="text-sm text-base-content/70">{crop.name}</p>
+                  <p className="text-xs text-base-content/50 mt-1">{crop.harvest}</p>
+                </div>
+                <input
+                  type="number"
+                  className="input input-bordered w-full max-w-[180px] rounded-2xl px-4 py-3"
+                  placeholder="0"
+                  value={cropCosts[crop.name] ?? 0}
+                  onChange={(e) =>
+                    setCropCosts((current) => ({
+                      ...current,
+                      [crop.name]: Number(e.target.value),
+                    }))
+                  }
+                />
+              </div>
+            ))
+          )}
 
-          <input
-            type="number"
-            className="input input-bordered w-full rounded-2xl"
-            placeholder="Fertilizer Cost"
-            value={fertilizer}
-            onChange={(e) => setFertilizer(Number(e.target.value))}
-          />
-
-          <input
-            type="number"
-            className="input input-bordered w-full rounded-2xl"
-            placeholder="Worker Cost"
-            value={worker}
-            onChange={(e) => setWorker(Number(e.target.value))}
-          />
-
-          <input
-            type="number"
-            className="input input-bordered w-full rounded-2xl"
-            placeholder="Harvest Income"
-            value={income}
-            onChange={(e) => setIncome(Number(e.target.value))}
-          />
+          <div className="pt-4 border-t border-base-200">
+            <label className="label">
+              <span className="label-text">Harvest Income</span>
+            </label>
+            <input
+              type="number"
+              className="input input-bordered w-full rounded-2xl px-4 py-3"
+              placeholder="Harvest Income"
+              value={income}
+              onChange={(e) => setIncome(Number(e.target.value))}
+            />
+          </div>
         </motion.div>
       </div>
+      <BottomNav />
     </div>
   );
 }
