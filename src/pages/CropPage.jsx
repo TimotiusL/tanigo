@@ -51,7 +51,6 @@ export default function CropPage({ crops, setCrops }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-200 pb-32">
-      {/* HEADER */}
       {!showModal && (
         <div className="sticky top-0 z-50 bg-base-100/70 backdrop-blur-xl border-b border-base-300">
           <div className="w-full px-8 py-4 flex items-center gap-4">
@@ -68,7 +67,6 @@ export default function CropPage({ crops, setCrops }) {
         </div>
       )}
 
-      {/* CONTENT */}
       <div className="w-full px-8 pt-6 grid gap-6">
         {crops.length === 0 ? (
           <motion.div
@@ -120,11 +118,9 @@ export default function CropPage({ crops, setCrops }) {
               }`}>
                 {crop.progress >= 100 ? "Complete" : "Ongoing"}
               </div>
-              {/* accent */}
               <div className="absolute left-0 top-0 h-full w-1.5 bg-primary" />
 
               <div className="p-6">
-                {/* TOP */}
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="flex items-center gap-2">
@@ -141,7 +137,6 @@ export default function CropPage({ crops, setCrops }) {
                   </div>
                 </div>
 
-                {/* PROGRESS */}
                 <div className="mt-6">
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-base-content/60">
@@ -163,7 +158,6 @@ export default function CropPage({ crops, setCrops }) {
                   </div>
                 </div>
 
-                {/* BOTTOM INFO */}
                 <div className="mt-5 flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-base-content">
@@ -183,7 +177,6 @@ export default function CropPage({ crops, setCrops }) {
         )}
       </div>
 
-      {/* FLOATING BUTTON */}
       {!showModal && crops.length > 0 && (
         <button
           onClick={() => setShowModal(true)}
@@ -193,7 +186,6 @@ export default function CropPage({ crops, setCrops }) {
         </button>
       )}
 
-      {/* MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center z-60">
           <motion.div

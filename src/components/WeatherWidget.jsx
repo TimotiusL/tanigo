@@ -28,7 +28,6 @@ export default function WeatherWidget() {
     fetchWeather();
   }, []);
 
-  // LOADING / ERROR STATE
   if (loading || !weather || !weather.main) {
     return (
       <div className="mt-5 rounded-3xl bg-green-600 text-white p-5 shadow-lg">
@@ -41,7 +40,6 @@ export default function WeatherWidget() {
     );
   }
 
-  // SUCCESS
   return (
     <div className="mt-5 rounded-3xl bg-green-600 text-white p-5 shadow-lg">
       <div className="flex items-center justify-between">

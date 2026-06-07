@@ -31,7 +31,6 @@ export default function ProfitPage({ crops, cropCosts, setCropCosts, income, set
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-200 pb-32">
-      {/* HEADER */}
       <div className="sticky top-0 z-50 bg-base-100/70 backdrop-blur-xl border-b border-base-300">
         <div className="w-full px-8 py-4 flex items-center gap-4">
           <div>
@@ -42,9 +41,7 @@ export default function ProfitPage({ crops, cropCosts, setCropCosts, income, set
         </div>
       </div>
 
-      {/* CONTENT */}
       <div className="w-full px-8 pt-6 grid gap-6">
-        {/* HERO SUMMARY */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,7 +66,6 @@ export default function ProfitPage({ crops, cropCosts, setCropCosts, income, set
           </div>
         </motion.div>
 
-        {/* QUICK STATS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <motion.div
             initial={{ opacity: 0 }}
@@ -118,7 +114,6 @@ export default function ProfitPage({ crops, cropCosts, setCropCosts, income, set
           </motion.div>
         </div>
 
-        {/* CHART */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -154,7 +149,6 @@ export default function ProfitPage({ crops, cropCosts, setCropCosts, income, set
             </ResponsiveContainer>
           </div>
 
-          {/* LEGEND */}
           <div className="flex justify-center gap-8 mt-2">
             <div className="flex items-center gap-2 text-sm">
               <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -168,7 +162,6 @@ export default function ProfitPage({ crops, cropCosts, setCropCosts, income, set
           </div>
         </motion.div>
 
-        {/* INPUT CARD */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

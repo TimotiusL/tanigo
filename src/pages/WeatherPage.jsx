@@ -58,7 +58,6 @@ export default function WeatherPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-200 pb-32">
-      {/* HEADER */}
       <div className="sticky top-0 z-50 bg-base-100/70 backdrop-blur-xl border-b border-base-300">
         <div className="w-full px-8 py-4 flex items-center gap-4">
           <div>
@@ -69,7 +68,6 @@ export default function WeatherPage() {
         </div>
       </div>
 
-      {/* CONTENT */}
       <div className="w-full px-8 pt-6 grid gap-6">
         {!weather ? (
           <div className="rounded-[2rem] bg-primary text-white p-8 shadow-xl">
@@ -77,7 +75,6 @@ export default function WeatherPage() {
           </div>
         ) : (
           <>
-            {/* HERO CARD */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -106,9 +103,7 @@ export default function WeatherPage() {
               </div>
             </motion.div>
 
-            {/* DETAILS */}
             <div className="grid grid-cols-3 gap-4">
-              {/* HUMIDITY */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -125,7 +120,6 @@ export default function WeatherPage() {
                 </h2>
               </motion.div>
 
-              {/* WIND */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -142,7 +136,6 @@ export default function WeatherPage() {
                 </h2>
               </motion.div>
 
-              {/* UV */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -158,7 +151,6 @@ export default function WeatherPage() {
               </motion.div>
             </div>
 
-            {/* FARMING INSIGHT */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -183,7 +175,6 @@ export default function WeatherPage() {
               </div>
             </motion.div>
 
-            {/* EXTRA CARD */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

@@ -35,10 +35,8 @@ function Home({ crops, cropCosts, income }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-base-200 via-base-100 to-base-200">
-      {/* NAVBAR */}
       <div className="sticky top-0 z-50 backdrop-blur-xl bg-base-100/70 border-b border-green-100">
         <div className="w-full px-8 py-4 flex items-center justify-between">
-          {/* LOGO */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -47,7 +45,6 @@ function Home({ crops, cropCosts, income }) {
             <img src={logo} alt="TaniGo Logo" className="h-10 object-contain" />
           </motion.div>
 
-          {/* RIGHT NAV */}
           <div className="flex items-center gap-2">
             <div className="btn btn-ghost btn-circle">
               <FaUserCircle size={28} className="text-gray-700" />
@@ -56,7 +53,6 @@ function Home({ crops, cropCosts, income }) {
         </div>
       </div>
 
-      {/* HEADER */}
       <div className="w-full px-8 pt-8 pb-5 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -73,7 +69,6 @@ function Home({ crops, cropCosts, income }) {
           </p>
         </motion.div>
 
-        {/* WEATHER */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -176,7 +171,6 @@ function Home({ crops, cropCosts, income }) {
         </div>
       </div>
 
-      {/* BOTTOM NAV */}
       <BottomNav />
     </div>
   );
@@ -192,7 +186,6 @@ export default function App() {
       darkMode ? "dark" : "tanigo",
     );
   }, [darkMode]);
-  // LOAD LOCAL STORAGE
   const [crops, setCrops] = useState(() => {
     const savedCrops = localStorage.getItem("tanigo-crops");
 
@@ -221,7 +214,6 @@ export default function App() {
     return savedIncome ? Number(savedIncome) : 3000000;
   });
 
-  // SAVE LOCAL STORAGE
   useEffect(() => {
     localStorage.setItem("tanigo-crops", JSON.stringify(crops));
   }, [crops]);
